@@ -46,4 +46,5 @@ public class Course {
 
     @OneToMany(cascade = ALL, mappedBy = "course")
     private List<Lesson> lessons;
+
 }
