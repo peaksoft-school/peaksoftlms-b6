@@ -14,7 +14,6 @@ public interface CourseService {
     CourseResponse getCourseById(Long id, User user);
     CourseResponse getAllStudentsFromCourse(Long id);
     CourseResponse getAllInstructorsFromCourse(Long id);
-
     List<CourseResponse> getAllCourses();
 
 }

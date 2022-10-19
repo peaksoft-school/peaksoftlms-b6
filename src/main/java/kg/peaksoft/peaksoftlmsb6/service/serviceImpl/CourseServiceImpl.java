@@ -63,17 +63,15 @@ public class CourseServiceImpl implements CourseService {
         User user = userRepository.findByEmail(users.getEmail()).orElseThrow(
                 () -> new NotFoundException("User with email %s not found"));
         if (user.getRole().getAuthority().equals("ADMIN")) {
-            Course course = courseRepository.findById(id).orElseThrow(
-                    () -> new NotFoundException("User with id %d not found"));
-            return mapToResponse(course);
+            return courseRepository.getCourseById(id).orElseThrow(
+                    () -> new NotFoundException("Course with id %d not found"));
         }
         return null;
     }
 
     @Override
     public List<CourseResponse> getAllCourses() {
-        List<Course> courses = courseRepository.findAll();
-        return mapToResponses(courses);
+        return courseRepository.getAllCourses();
     }
 
     @Override
@@ -93,18 +91,5 @@ public class CourseServiceImpl implements CourseService {
                 course.getCourseDescription(),
                 course.getDateOfStart(),
                 course.getCourseImage());
-    }
-
-    private List<CourseResponse> mapToResponses(List<Course> courses) {
-        List<CourseResponse> courseResponses = new ArrayList<>();
-        for (Course course : courses) {
-            courseResponses.add(new CourseResponse(
-                    course.getId(),
-                    course.getCourseName(),
-                    course.getCourseDescription(),
-                    course.getDateOfStart(),
-                    course.getCourseImage()));
-        }
-        return courseResponses;
     }
 }
