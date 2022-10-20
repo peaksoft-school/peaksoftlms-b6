@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.CascadeType.*;
@@ -46,4 +47,11 @@ public class Course {
 
     @OneToMany(cascade = ALL, mappedBy = "course")
     private List<Lesson> lessons;
+
+    public void addInstructor(Instructor instructor) {
+        if(instructors == null) {
+            instructors = new ArrayList<>();
+        }
+        instructors.add(instructor);
+    }
 }
