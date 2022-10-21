@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.peaksoft.peaksoftlmsb6.dto.request.GroupRequest;
 import kg.peaksoft.peaksoftlmsb6.dto.response.GroupResponse;
-import kg.peaksoft.peaksoftlmsb6.dto.response.StudentGroupResponse;
+import kg.peaksoft.peaksoftlmsb6.dto.response.GroupInnerPage;
 import kg.peaksoft.peaksoftlmsb6.entity.User;
 import kg.peaksoft.peaksoftlmsb6.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +58,7 @@ public class GroupApi {
 
     @GetMapping("/students/{id}")
     @Operation(description = "ADMIN can get all students by group id")
-    public List<StudentGroupResponse> getAllStudentsByGroupId(@PathVariable Long id){
+    public List<GroupInnerPage> getAllStudentsByGroupId(@PathVariable Long id){
         return groupService.getAllStudentsFromGroup(id);
     }
 }

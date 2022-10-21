@@ -2,7 +2,7 @@ package kg.peaksoft.peaksoftlmsb6.service;
 
 import kg.peaksoft.peaksoftlmsb6.dto.request.GroupRequest;
 import kg.peaksoft.peaksoftlmsb6.dto.response.GroupResponse;
-import kg.peaksoft.peaksoftlmsb6.dto.response.StudentGroupResponse;
+import kg.peaksoft.peaksoftlmsb6.dto.response.GroupInnerPage;
 import kg.peaksoft.peaksoftlmsb6.entity.Group;
 import kg.peaksoft.peaksoftlmsb6.entity.Student;
 import kg.peaksoft.peaksoftlmsb6.entity.User;
@@ -72,12 +72,12 @@ public class GroupService {
     }
 
 
-   public List<StudentGroupResponse> getAllStudentsFromGroup(Long id) {
+   public List<GroupInnerPage> getAllStudentsFromGroup(Long id) {
         Group group = groupRepository.findById(id).orElseThrow(
                 () -> new NotFoundException("Group not found"));
-        List<StudentGroupResponse> studentGroupResponses = new ArrayList<>();
+        List<GroupInnerPage> studentGroupResponses = new ArrayList<>();
         for(Student student : group.getStudents()) {
-            studentGroupResponses.add(new StudentGroupResponse(student.getId(),
+            studentGroupResponses.add(new GroupInnerPage(student.getId(),
                     student.getFirstName()+" "+student.getLastName(),
                     student.getGroup().getGroupName(),student.getStudyFormat(),
                     student.getPhoneNumber(),student.getEmail()));
