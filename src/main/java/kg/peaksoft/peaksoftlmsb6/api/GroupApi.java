@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kg.peaksoft.peaksoftlmsb6.dto.request.GroupRequest;
 import kg.peaksoft.peaksoftlmsb6.dto.response.GroupResponse;
+import kg.peaksoft.peaksoftlmsb6.dto.response.StudentGroupResponse;
 import kg.peaksoft.peaksoftlmsb6.entity.User;
 import kg.peaksoft.peaksoftlmsb6.service.GroupService;
 import lombok.RequiredArgsConstructor;
@@ -23,34 +24,42 @@ public class GroupApi {
 
     private final GroupService groupService;
 
-    @PostMapping("/create")
+    @PostMapping()
     @Operation(description = "ADMIN can create group")
     public GroupResponse createGroup(@RequestBody GroupRequest request) {
         return groupService.createGroup(request);
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("{id}")
     @Operation(description = "ADMIN can update group by id")
     public GroupResponse updateGroup(@PathVariable("id") Long id, @RequestBody GroupRequest request) {
         return groupService.updateGroup(id, request);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     @Operation(description = "ADMIN can delete group by id")
     public GroupResponse deleteGroup(@PathVariable("id") Long id) {
         return groupService.deleteGroupById(id);
     }
 
-    @GetMapping("/getGroup/{id}")
+    @GetMapping("/{id}")
     @Operation(description = "ADMIN get group by id")
     public GroupResponse getGroupById(@PathVariable("id") Long id, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         return groupService.getGroupById(id, user);
     }
 
-    @GetMapping("/all")
+    @GetMapping()
     @Operation(description = "ADMIN can get all groups")
     public List<GroupResponse> getAllGroups() {
         return groupService.getAllGroups();
     }
+
+
+    @GetMapping("/students/{id}")
+    @Operation(description = "ADMIN can get all students by group id")
+    public List<StudentGroupResponse> getAllStudentsByGroupId(@PathVariable Long id){
+        return groupService.getAllStudentsFromGroup(id);
+    }
 }
+
