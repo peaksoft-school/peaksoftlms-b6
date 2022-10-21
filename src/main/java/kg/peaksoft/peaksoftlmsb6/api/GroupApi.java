@@ -61,5 +61,6 @@ public class GroupApi {
     public List<GroupInnerPage> getAllStudentsByGroupId(@PathVariable Long id){
         return groupService.getAllStudentsFromGroup(id);
     }
+
 }
 
