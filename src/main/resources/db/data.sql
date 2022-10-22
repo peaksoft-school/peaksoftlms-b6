@@ -4,19 +4,19 @@ VALUES (1,'datkascnu@gmail.com',false,'$2a$12$jM6wsk2WdTW/dLszB/uFuexiNmhW9uTNmz
        (3,'student@gmail.com',false,'$2a$12$qvTo/yV6sm2euRGC5cm2.Ou1sfiHTEFv2iKyZPnDnI2UK2cEV3Ife', 'STUDENT');
 
 insert into groups(id,date_of_start, group_description, group_image, group_name)
-values (1,'2022/11/10','Group Description', 'Group image link', 'Group name');
+values (1,'2022/11/10','Group B', 'image link', 'Java-6');
 
-insert into courses(id,course_description, course_image, course_name, date_of_start,group_id)
-values (1,'Course Description','link image','course name', '2022/11/10' ,1);
+insert into courses(id,course_description, course_image, course_name, date_of_start)
+values (1,'Programming language','link image','Java', '2022/11/10');
 
 insert into instructors(id,first_name, last_name, phone_number,specialization, user_id)
-values (1,'Instructor firs name', 'Instructor last name','555231245', 'Java',1);
+values (1,'Chyngyz', 'Sharshekeev','555231245', 'Java',2);
 
 insert into students(id,email,first_name, last_name, phone_number,study_format,group_id,user_id)
-values (1,'student@gmail.com','Student fist name', 'Student last name',' 556545652', 'OFFLINE',1,1);
+values (1,'student@gmail.com','Maksat', 'Kairullaev',' 556545652', 'OFFLINE',1,3);
 
 insert into lessons(id,lesson_name,  course_id)
-values (1,'Lesson name',1);
+values (1,'Lesson AWS',1);
 
 insert into links(id,link,link_text, lesson_id)
 values (1,'link', 'The link text',1);
