@@ -23,7 +23,6 @@ import java.util.List;
 @Tag(name = "Course Layout", description = "ADMIN can do a CRUD operations")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class CourseApi {
-
     private final CourseService courseService;
 
     @PostMapping

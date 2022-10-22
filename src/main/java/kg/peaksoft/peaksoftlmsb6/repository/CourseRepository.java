@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import java.time.LocalDate;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
-
     @Modifying
     @Transactional
     @Query("update Course set " +
@@ -23,5 +22,4 @@ public interface CourseRepository extends JpaRepository<Course, Long> {
                 @Param("description") String description,
                 @Param("dateOfStart") LocalDate dateOfStart,
                 @Param("image") String image);
-
 }
