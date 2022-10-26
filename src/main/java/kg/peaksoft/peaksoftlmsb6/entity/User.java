@@ -1,6 +1,7 @@
 package kg.peaksoft.peaksoftlmsb6.entity;
 
 import kg.peaksoft.peaksoftlmsb6.entity.enums.Role;
+import kg.peaksoft.peaksoftlmsb6.validation.PasswordValid;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -22,9 +23,9 @@ public class User implements UserDetails {
     @SequenceGenerator(name = "user_seq", sequenceName = "user_seq", allocationSize = 1, initialValue = 4)
     @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
-
     private String email;
 
+//    @PasswordValid
     private String password;
 
     @Enumerated(EnumType.STRING)

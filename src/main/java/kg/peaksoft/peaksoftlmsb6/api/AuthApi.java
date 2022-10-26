@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.mail.MessagingException;
+import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,7 +21,7 @@ import javax.mail.MessagingException;
 public class AuthApi {
     private final UserService authService;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     @Operation(description = "User can login by email and password")
     public AuthResponse login(@RequestBody LoginRequest request){
         return authService.login(request);
@@ -35,8 +36,8 @@ public class AuthApi {
     }
 
     @PostMapping("/reset/password")
-    @Operation(description = "User writes a new password then writes again to confirm")
-    public SimpleResponse resetPassword(@RequestBody ForgotPasswordRequest newPassword) {
+    @Operation(description = "For save the new password")
+    public SimpleResponse resetPassword(@RequestBody @Valid ForgotPasswordRequest newPassword) {
         return authService.resetPassword(newPassword);
     }
 }

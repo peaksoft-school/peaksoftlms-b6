@@ -28,14 +28,14 @@ public class CourseApi {
 
     @PostMapping
     @Operation(summary = "Save course",
-            description = "Admin save course by request")
+            description = "Admin save new course")
     public CourseResponse createCourse(@RequestBody CourseRequest request) {
         return courseService.createCourse(request);
     }
 
     @PutMapping("/update/{id}")
     @Operation(summary = "Update course",
-            description = "Admin update course by id and request")
+            description = "Admin update course by id")
     public CourseResponse updateCourse(@PathVariable("id") Long id, @RequestBody CourseRequest request) {
         return courseService.updateCourse(id, request);
     }
@@ -69,7 +69,7 @@ public class CourseApi {
     }
 
     @GetMapping("/instructors/{id}")
-    @Operation(summary = "Get all instructor from course",
+    @Operation(summary = "Get all instructors from course",
             description = "Admin get all instructors from course by course id")
     public List<AssignInstructorResponse> getAllInstructorsFromCourse(@PathVariable("id") Long id) {
         return courseService.getAllInstructorsFromCourse(id);
@@ -84,7 +84,7 @@ public class CourseApi {
 
     @GetMapping
     @Operation(summary = "Get all courses",
-            description = "Admin get all courses")
+            description = "Get all courses for admin , instructor and student")
     @PreAuthorize("hasAnyAuthority('ADMIN','INSTRUCTOR','STUDENT')")
     public List<CourseResponse> getAllCourses(Authentication authentication) {
         return courseService.getAllCourses(authentication);
