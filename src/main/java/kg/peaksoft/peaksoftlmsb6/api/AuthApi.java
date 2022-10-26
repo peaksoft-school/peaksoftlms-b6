@@ -22,21 +22,23 @@ public class AuthApi {
     private final UserService authService;
 
     @PostMapping("/login")
-    @Operation(description = "User can login by email and password")
+    @Operation(summary = "Login",
+            description = "User can login by email and password")
     public AuthResponse login(@RequestBody LoginRequest request){
         return authService.login(request);
     }
 
     @PostMapping("/forgot/password")
-    @Operation(description = "If the user has forgotten the password, " +
-            "he can send an email after he will receive a link to reset the password in the mail")
+    @Operation(summary = "Forgot password",
+            description = "Send email if user forgot password")
     public SimpleResponse forgotPassword(@RequestParam String email,
                                          @RequestParam String link) throws MessagingException {
         return authService.forgotPassword(email,link);
     }
 
     @PostMapping("/reset/password")
-    @Operation(description = "For save the new password")
+    @Operation(summary = "Reset password",
+            description = "For save the new password")
     public SimpleResponse resetPassword(@RequestBody @Valid ForgotPasswordRequest newPassword) {
         return authService.resetPassword(newPassword);
     }
