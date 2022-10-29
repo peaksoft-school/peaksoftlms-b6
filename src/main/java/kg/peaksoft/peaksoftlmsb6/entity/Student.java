@@ -19,7 +19,7 @@ import static javax.persistence.CascadeType.*;
 public class Student {
 
     @Id
-    @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1 , initialValue = 2)
+    @SequenceGenerator(name = "student_seq", sequenceName = "student_seq", allocationSize = 1, initialValue = 2)
     @GeneratedValue(generator = "student_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -40,7 +40,8 @@ public class Student {
     @OneToOne(cascade = ALL)
     private User user;
 
-    public Student(StudentRequest request){
+
+    public Student(StudentRequest request) {
         this.firstName = request.getFirstName();
         this.lastName = request.getLastName();
         this.studyFormat = request.getStudyFormat();
