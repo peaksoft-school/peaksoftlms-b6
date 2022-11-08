@@ -192,7 +192,7 @@ public class CourseService {
 
     public SimpleResponse deleteGroupFromCourse(Long id) {
         Group group = groupRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Group with id =%s not found",id)));
+                () -> new NotFoundException(String.format("Курс с id =%s не найден",id)));
         for(Course course : group.getCourses()) {
             course.getGroup().remove(group);
         }
