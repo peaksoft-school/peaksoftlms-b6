@@ -52,7 +52,7 @@ public class StudentService {
                 () -> new NotFoundException(String.format("Пользователь с email =%s не найден", email)));
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-        messageHelper.setSubject("[peaksoftlms-b6] reset password link");
+        messageHelper.setSubject("[peaksoftlms-b6] send password and username");
         messageHelper.setFrom("peaksoftlms-b6@gmail.com");
         messageHelper.setTo(email);
         messageHelper.setText("Username: " + user.getUsername() + "\tPassword: " + user.getPassword(), true);
