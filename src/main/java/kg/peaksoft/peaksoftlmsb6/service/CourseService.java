@@ -117,7 +117,7 @@ public class CourseService {
 
     public List<AssignInstructorResponse> getAllInstructorsFromCourse(Long id) {
         Course course = courseRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Курс с id %s не найден",id)));
+                () -> new NotFoundException(String.format("Курc не найден",id)));
         List<Instructor> instructors = course.getInstructors();
         List<AssignInstructorResponse> assignResponse = new ArrayList<>();
         for (Instructor instructor : instructors) {
@@ -156,21 +156,21 @@ public class CourseService {
     public Deque<CourseResponse> getAllCourses(Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         User user1 = userRepository.findByEmail(user.getEmail()).orElseThrow(
-                () -> new NotFoundException("Пользователь с электронной почтой %s не найден"));
+                () -> new NotFoundException("Пользователь с электронной почтой не найден"));
         Deque<CourseResponse> courseResponses = new ArrayDeque<>();
         switch (user1.getRole().getAuthority()) {
             case "ADMIN":
                 return courseRepository.getAllCourses();
             case "STUDENT":
                 Student student = studentRepository.findByUserId(user1.getId()).orElseThrow(
-                        () -> new NotFoundException(String.format("Студент с электронной почтой =%s не найден",user1.getId())));
+                        () -> new NotFoundException(String.format("Студент с электронной почтой не найден",user1.getId())));
                 for (Course course : student.getGroup().getCourses()) {
                     courseResponses.addFirst(courseRepository.getCourse(course.getId()));
                 }
                 break;
             case "INSTRUCTOR":
                 Instructor instructor = instructorRepository.findByUserId(user1.getId())
-                        .orElseThrow(() -> new NotFoundException(String.format("Инструктор с id =%s не найден", user1.getId())));
+                        .orElseThrow(() -> new NotFoundException(String.format("Инструктор не найден", user1.getId())));
                 for (Course course : instructor.getCourses()) {
                     courseResponses.addFirst(courseRepository.getCourse(course.getId()));
                 }
@@ -181,9 +181,9 @@ public class CourseService {
 
     public SimpleResponse assignGroupToCourse(AssignGroupRequest request) {
         Group group = groupRepository.findById(request.getGroupId()).orElseThrow(
-                () -> new NotFoundException(String.format("Группа с id =%s не найдена",request.getGroupId())));
+                () -> new NotFoundException(String.format("Группа не найдена",request.getGroupId())));
         Course course = courseRepository.findById(request.getCourseId()).orElseThrow(
-                () -> new NotFoundException(String.format("Курс с id =%s не найден",request.getCourseId())));
+                () -> new NotFoundException(String.format("Курс не найден",request.getCourseId())));
         group.addCourse(course);
         course.addGroup(group);
         courseRepository.save(course);
@@ -192,7 +192,7 @@ public class CourseService {
 
     public SimpleResponse deleteGroupFromCourse(Long id) {
         Group group = groupRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Группа с id =%s не найдена",id)));
+                () -> new NotFoundException(String.format("Группа не найдена",id)));
         for(Course course : group.getCourses()) {
             course.getGroup().remove(group);
         }
