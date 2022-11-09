@@ -6,7 +6,6 @@ import kg.peaksoft.peaksoftlmsb6.dto.response.StudentResponse;
 import kg.peaksoft.peaksoftlmsb6.entity.Group;
 import kg.peaksoft.peaksoftlmsb6.entity.Student;
 import kg.peaksoft.peaksoftlmsb6.entity.User;
-import kg.peaksoft.peaksoftlmsb6.entity.enums.Role;
 import kg.peaksoft.peaksoftlmsb6.entity.enums.StudyFormat;
 import kg.peaksoft.peaksoftlmsb6.exception.NotFoundException;
 import kg.peaksoft.peaksoftlmsb6.repository.GroupRepository;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -43,7 +41,7 @@ public class StudentService {
 
     public StudentResponse update(Long id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Студент с id =%s не найден", studentRequest.getId())));
+                () -> new NotFoundException(String.format("Студент с id =%s не найден", id)));
         Group group = groupRepository.findById(studentRequest.getGroupId()).orElseThrow(
                 () -> new NotFoundException(String.format("Группа с id =%s не найдена", studentRequest.getGroupId())));
         student.setGroup(group);
