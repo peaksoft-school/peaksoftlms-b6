@@ -40,7 +40,7 @@ public class UserService  {
                         userRequest.getEmail(),
                         userRequest.getPassword()));
         User user = userRepository.findByEmail(authentication.getName())
-                .orElseThrow(() -> new BadCredentialsException("bad credentials"));
+                .orElseThrow(() -> new BadCredentialsException("Неправильные данные"));
         String token = jwtTokenUtil.generateToken(user.getEmail());
         return new AuthResponse(user.getUsername(),token,user.getRole());
     }
@@ -48,7 +48,7 @@ public class UserService  {
 
     public SimpleResponse forgotPassword(String email, String link) throws MessagingException {
         User user = userRepository.findByEmail(email).orElseThrow(
-                () -> new NotFoundException(String.format("Пользователь с электронной почтой =%s не найден",email)));
+                () -> new NotFoundException(String.format("Пользователь с электронной почтой не найден",email)));
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage,true,"UTF-8");
         messageHelper.setSubject("[peaksoftlms-b6] ссылка для сброса пароля");
@@ -61,7 +61,7 @@ public class UserService  {
 
     public SimpleResponse resetPassword(ForgotPasswordRequest request) {
         User user = userRepository.findById(request.getId()).orElseThrow(
-                () -> new NotFoundException(String.format("Пользователь с электронной почтой =%s не найден",request.getId())));
+                () -> new NotFoundException(String.format("Пользователь с электронной почтой не найден",request.getId())));
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
         return new SimpleResponse("Пароль обновлен");
     }

@@ -76,4 +76,10 @@ public class GroupService {
         return groupRepository.getAllGroups();
     }
 
+    public GroupResponse getById(Long id) {
+        Group group = groupRepository.findById(id).orElseThrow(
+                () -> new NotFoundException(String.format("Группа с id = %s не найдена", id)));
+        return groupRepository.getGroup(group.getId());
+    }
+
 }

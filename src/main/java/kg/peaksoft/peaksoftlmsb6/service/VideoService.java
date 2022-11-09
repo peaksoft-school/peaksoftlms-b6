@@ -23,7 +23,7 @@ public class VideoService {
 
     public VideoResponse saveVideo(VideoRequest request) {
         Lesson lesson = lessonRepository.findById(request.getLessonId()).orElseThrow(
-                () -> new NotFoundException(String.format("Урок с id =%s не найден", request.getLessonId())));
+                () -> new NotFoundException(String.format("Урок не найден", request.getLessonId())));
         Video video = new Video(request);
         lesson.setVideo(video);
         video.setLesson(lesson);
@@ -33,7 +33,7 @@ public class VideoService {
 
     public VideoResponse updateVideo(Long id, VideoRequest request) {
         Video video = videoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Видео с id =%s не найдено", id)));
+                () -> new NotFoundException(String.format("Видео не найдено", id)));
         videoRepository.update(id,
                 request.getVideoName(),
                 request.getDescription(),
@@ -47,7 +47,7 @@ public class VideoService {
 
     public SimpleResponse deleteById(Long id) {
         if (!videoRepository.existsById(id)) {
-            throw new NotFoundException(String.format("Видео с id =%s не найдено",id));
+            throw new NotFoundException(String.format("Видео не найдено",id));
         }
         videoRepository.deleteVideoById(id);
         return new SimpleResponse("Видео удалено");
@@ -55,7 +55,7 @@ public class VideoService {
 
     public VideoResponse getById(Long id) {
         Video video = videoRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Видео с id =%s не найдено", id)));
+                () -> new NotFoundException(String.format("Видео не найдено", id)));
         return videoRepository.getVideo(video.getId());
     }
 }
