@@ -6,7 +6,6 @@ import kg.peaksoft.peaksoftlmsb6.dto.response.StudentResponse;
 import kg.peaksoft.peaksoftlmsb6.entity.Group;
 import kg.peaksoft.peaksoftlmsb6.entity.Student;
 import kg.peaksoft.peaksoftlmsb6.entity.User;
-import kg.peaksoft.peaksoftlmsb6.entity.enums.Role;
 import kg.peaksoft.peaksoftlmsb6.entity.enums.StudyFormat;
 import kg.peaksoft.peaksoftlmsb6.exception.NotFoundException;
 import kg.peaksoft.peaksoftlmsb6.repository.GroupRepository;
@@ -17,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,7 +31,7 @@ public class StudentService {
     public StudentResponse createStudent(StudentRequest studentRequest) {
         studentRequest.setPassword(passwordEncoder.encode(studentRequest.getPassword()));
         Group group = groupRepository.findById(studentRequest.getGroupId()).orElseThrow(
-                () -> new NotFoundException(String.format("Group not found with id=%s", studentRequest.getGroupId())));
+                () -> new NotFoundException(String.format("Группа не найдена", studentRequest.getGroupId())));
         Student student = new Student(studentRequest);
         group.addStudents(student);
         student.setGroup(group);
@@ -43,9 +41,9 @@ public class StudentService {
 
     public StudentResponse update(Long id, StudentRequest studentRequest) {
         Student student = studentRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Student with id =%s not found",id)));
+                () -> new NotFoundException(String.format("Студент не найден", id)));
         Group group = groupRepository.findById(studentRequest.getGroupId()).orElseThrow(
-                () -> new NotFoundException(String.format("Group not found with id=%s", studentRequest.getGroupId())));
+                () -> new NotFoundException(String.format("Группа не найдена", studentRequest.getGroupId())));
         student.setGroup(group);
         group.addStudents(student);
         studentRepository.update(
@@ -56,7 +54,7 @@ public class StudentService {
                 studentRequest.getPhoneNumber());
         student.getUser().setPassword(passwordEncoder.encode(studentRequest.getPassword()));
         User user = userRepository.findById(student.getUser().getId())
-                .orElseThrow(() -> new NotFoundException(String.format("User with id =%s not found", student.getUser().getId())));
+                .orElseThrow(() -> new NotFoundException(String.format("Пользователь не найден", student.getUser().getId())));
         user.setEmail(studentRequest.getEmail());
         user.setPassword(passwordEncoder.encode(studentRequest.getPassword()));
         studentRepository.save(student);
@@ -65,9 +63,9 @@ public class StudentService {
 
     public SimpleResponse deleteStudent(Long id) {
         Student student = studentRepository.findById(id).orElseThrow(
-                () -> new NotFoundException("Not found"));
+                () -> new NotFoundException(String.format("Студент не найден")));
         studentRepository.delete(student);
-        return new SimpleResponse(String.format("student with id = %s deleted", id));
+        return new SimpleResponse(String.format("Студент удален", id));
     }
 
 
@@ -81,7 +79,7 @@ public class StudentService {
 
     public StudentResponse getById(Long id) {
         Student student = studentRepository.findById(id).orElseThrow(
-                () -> new NotFoundException(String.format("Студент с id = %s не найден",id)));
+                () -> new NotFoundException(String.format("Студент не найден",id)));
         return studentRepository.getStudent(student.getId());
     }
 

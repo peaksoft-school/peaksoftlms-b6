@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface PasswordValid {
 
-    String message() default "Invalid password";
+    String message() default "Неверный пароль";
 
     Class<?>[] groups() default {};
 
