@@ -18,7 +18,7 @@ import static javax.persistence.CascadeType.*;
 public class Test {
 
     @Id
-    @SequenceGenerator(name = "test_seq", sequenceName = "test_seq", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "test_seq", sequenceName = "test_seq", allocationSize = 1, initialValue = 3)
     @GeneratedValue(generator = "test_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -35,8 +35,11 @@ public class Test {
 
     private Boolean isEnable;
 
+    @OneToMany(cascade = ALL)
+    private List<Results> results;
+
     public void addQuestion(Question question) {
-        if(this.question == null) {
+        if (this.question == null) {
             this.question = new ArrayList<>();
         }
         this.question.add(question);

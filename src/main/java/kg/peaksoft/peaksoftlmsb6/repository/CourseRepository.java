@@ -12,7 +12,6 @@ import org.springframework.data.repository.query.Param;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.ArrayDeque;
-import java.util.Deque;
 
 public interface CourseRepository extends JpaRepository<Course, Long> {
 

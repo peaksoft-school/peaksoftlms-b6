@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -21,14 +19,14 @@ import static javax.persistence.CascadeType.*;
 public class Task {
 
     @Id
-    @SequenceGenerator(name = "task_seq", sequenceName = "task_seq", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "task_seq", sequenceName = "task_seq", allocationSize = 1, initialValue = 4)
     @GeneratedValue(generator = "task_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String taskName;
 
     @JsonIgnore
-    @OneToMany(cascade = ALL, mappedBy = "task")
+    @OneToMany(cascade = ALL)
     private List<Content> contents;
 
     @OneToOne(cascade = {
@@ -38,7 +36,7 @@ public class Task {
     private Lesson lesson;
 
     public void addContent(Content content) {
-        if(this.contents == null) {
+        if (this.contents == null) {
             this.contents = new ArrayList<>();
         }
         this.contents.add(content);

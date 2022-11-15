@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.ALL;
 
 @Entity
 @Table(name = "lessons")
@@ -17,7 +17,7 @@ import static javax.persistence.CascadeType.*;
 public class Lesson {
 
     @Id
-    @SequenceGenerator(name = "lesson_seq", sequenceName = "lesson_seq", allocationSize = 1,initialValue = 2)
+    @SequenceGenerator(name = "lesson_seq", sequenceName = "lesson_seq", allocationSize = 1, initialValue = 10)
     @GeneratedValue(generator = "lesson_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -46,10 +46,4 @@ public class Lesson {
         this.link = getLink();
         this.test = getTest();
     }
-
-    @ManyToOne(cascade = {
-            DETACH,
-            MERGE,
-            REFRESH})
-    private Course course;
 }

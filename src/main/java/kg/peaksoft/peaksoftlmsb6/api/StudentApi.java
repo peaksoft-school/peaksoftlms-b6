@@ -73,5 +73,4 @@ public class StudentApi {
     public SimpleResponse importExcel(@PathVariable Long id, @RequestParam(name = "file", required = false) MultipartFile file) throws IOException, MessagingException {
         return studentService.importExcel(id, file);
     }
-
 }

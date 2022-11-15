@@ -22,7 +22,7 @@ public class PresentationService {
 
     private final LessonRepository lessonRepository;
 
-    public PresentationResponse savePresentation(PresentationRequest request){
+    public PresentationResponse savePresentation(PresentationRequest request) {
         Lesson lesson = lessonRepository.findById(request.getLessonId()).orElseThrow(
                 () -> new NotFoundException("Урок не найден"));
         Presentation presentation = new Presentation(request);

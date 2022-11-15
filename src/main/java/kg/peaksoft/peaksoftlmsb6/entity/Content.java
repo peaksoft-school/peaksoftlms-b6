@@ -7,8 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-import static javax.persistence.CascadeType.*;
-
 @Entity
 @Table(name = "contents")
 @Getter
@@ -17,7 +15,7 @@ import static javax.persistence.CascadeType.*;
 public class Content {
 
     @Id
-    @SequenceGenerator(name = "content_seq", sequenceName = "content_seq", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "content_seq", sequenceName = "content_seq", allocationSize = 1, initialValue = 4)
     @GeneratedValue(generator = "content_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -27,11 +25,4 @@ public class Content {
     private ContentFormat contentFormat;
 
     private String contentValue;
-
-    @ManyToOne(cascade = {
-            MERGE,
-            PERSIST,
-            REFRESH,
-            DETACH})
-    private Task task;
 }

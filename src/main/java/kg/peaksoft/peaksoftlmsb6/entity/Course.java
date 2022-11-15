@@ -20,7 +20,7 @@ import static javax.persistence.CascadeType.*;
 public class Course {
 
     @Id
-    @SequenceGenerator(name = "course_seq", sequenceName = "course_seq", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "course_seq", sequenceName = "course_seq", allocationSize = 1, initialValue = 10)
     @GeneratedValue(generator = "course_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -46,25 +46,25 @@ public class Course {
             REFRESH}, mappedBy = "courses")
     private List<Instructor> instructors;
 
-    @OneToMany(cascade = ALL, mappedBy = "course")
+    @OneToMany(cascade = ALL)
     private List<Lesson> lessons;
 
-    public void addInstructor(Instructor instructor ) {
-        if(this.instructors == null) {
+    public void addInstructor(Instructor instructor) {
+        if (this.instructors == null) {
             this.instructors = new ArrayList<>();
         }
         this.instructors.add(instructor);
     }
 
     public void addGroup(Group group) {
-        if(this.group == null) {
+        if (this.group == null) {
             this.group = new ArrayList<>();
         }
         this.group.add(group);
     }
 
     public void addLesson(Lesson lesson) {
-        if(this.lessons == null) {
+        if (this.lessons == null) {
             this.lessons = new ArrayList<>();
         }
         this.lessons.add(lesson);

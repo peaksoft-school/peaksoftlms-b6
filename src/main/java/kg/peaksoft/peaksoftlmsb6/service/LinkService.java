@@ -46,7 +46,7 @@ public class LinkService {
     }
 
     public SimpleResponse deleteById(Long id) {
-        if(!linkRepository.existsById(id)) {
+        if (!linkRepository.existsById(id)) {
             throw new NotFoundException("Ссылка не найдена");
         }
         linkRepository.deleteLinkById(id);

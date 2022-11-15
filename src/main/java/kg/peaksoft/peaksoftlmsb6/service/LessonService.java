@@ -1,14 +1,15 @@
 package kg.peaksoft.peaksoftlmsb6.service;
 
 import kg.peaksoft.peaksoftlmsb6.dto.request.LessonRequest;
-import kg.peaksoft.peaksoftlmsb6.dto.response.InstructorResponse;
 import kg.peaksoft.peaksoftlmsb6.dto.response.LessonResponse;
 import kg.peaksoft.peaksoftlmsb6.dto.response.SimpleResponse;
-import kg.peaksoft.peaksoftlmsb6.entity.*;
+import kg.peaksoft.peaksoftlmsb6.entity.Course;
+import kg.peaksoft.peaksoftlmsb6.entity.Lesson;
 import kg.peaksoft.peaksoftlmsb6.exception.NotFoundException;
 import kg.peaksoft.peaksoftlmsb6.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,7 @@ public class LessonService {
     public SimpleResponse createLesson(LessonRequest request) {
         Course course = courseRepository.findById(request.getCourseId()).orElseThrow(() -> new NotFoundException("Course not found"));
         Lesson lesson = new Lesson(request);
-        lesson.setCourse(course);
+        course.addLesson(lesson);
         lessonRepository.save(lesson);
         return new SimpleResponse("Урок сохранён");
     }
@@ -44,23 +45,23 @@ public class LessonService {
     public SimpleResponse deleteLesson(Long id) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Урок не найден"));
-        if (lesson.getTest() != null) {
-            Test test = testRepository.findById(lesson.getTest().getId())
-                    .orElseThrow(() -> new NotFoundException("Тест не найден"));
-            Results results = resultsRepository.findById(lesson.getTest().getId())
-                    .orElseThrow(() -> new NotFoundException("Результат не найден"));
-            resultsRepository.delete(results);
-            testRepository.delete(test);
-        }
+//        if (lesson.getTest() != null) {
+//            Test test = testRepository.findById(lesson.getTest().getId())
+//                    .orElseThrow(() -> new NotFoundException("Тест не найден"));
+//            Results results = resultsRepository.findById(lesson.getTest().getId())
+//                    .orElseThrow(() -> new NotFoundException("Результат не найден"));
+//            resultsRepository.delete(results);
+//            testRepository.delete(test);
+//        }
 
-        if (lesson.getTask() != null) {
-            Task task = taskRepository.findById(lesson.getTask().getId())
-                    .orElseThrow(() -> new NotFoundException("Задача не найдена"));
-            Content content = contentRepository.findById(lesson.getTask().getId())
-                    .orElseThrow(() -> new NotFoundException("Контент не найден"));
-            contentRepository.delete(content);
-            taskRepository.delete(task);
-        }
+//        if (lesson.getTask() != null) {
+//            Task task = taskRepository.findById(lesson.getTask().getId())
+//                    .orElseThrow(() -> new NotFoundException("Задача не найдена"));
+//            Content content = contentRepository.findById(lesson.getTask().getId())
+//                    .orElseThrow(() -> new NotFoundException("Контент не найден"));
+//            contentRepository.delete(content);
+//            taskRepository.delete(task);
+//        }
 
         lessonRepository.delete(lesson);
         return new SimpleResponse("Урок удалён");

@@ -1,6 +1,5 @@
 package kg.peaksoft.peaksoftlmsb6.entity;
 
-import com.poiji.annotation.ExcelCellName;
 import kg.peaksoft.peaksoftlmsb6.dto.request.GroupRequest;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +20,7 @@ import static javax.persistence.CascadeType.*;
 public class Group {
 
     @Id
-    @SequenceGenerator(name = "group_seq", sequenceName = "group_seq", allocationSize = 1, initialValue = 2)
+    @SequenceGenerator(name = "group_seq", sequenceName = "group_seq", allocationSize = 1, initialValue = 10)
     @GeneratedValue(generator = "group_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 
@@ -34,29 +33,18 @@ public class Group {
 
     private String groupImage;
 
-    @ManyToMany(cascade = {
-            MERGE,
-            REFRESH,
-            DETACH}, mappedBy = "group")
-    private List<Course> courses;
-
     @OneToMany(cascade = ALL, mappedBy = "group")
     private List<Student> students;
 
+    @ManyToMany(cascade = {DETACH, REFRESH}, mappedBy = "group")
+    private List<Course> courses;
+
     public void addStudents(Student student) {
-        if(this.students == null) {
+        if (this.students == null) {
             this.students = new ArrayList<>();
         }
         this.students.add(student);
     }
-
-    public void addCourse(Course course) {
-        if(this.courses == null) {
-            this.courses = new ArrayList<>();
-        }
-        this.courses.add(course);
-    }
-
 
     public Group(GroupRequest request) {
         this.groupName = request.getGroupName();

@@ -7,7 +7,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 
-import static javax.persistence.CascadeType.*;
+import static javax.persistence.CascadeType.DETACH;
+import static javax.persistence.CascadeType.MERGE;
 
 @Entity
 @Table(name = "results")
@@ -29,11 +30,5 @@ public class Results {
             MERGE,
             DETACH})
     private Student student;
-
-    @ManyToOne(cascade = {
-            MERGE,
-            REFRESH,
-            DETACH})
-    private Test test;
 
 }

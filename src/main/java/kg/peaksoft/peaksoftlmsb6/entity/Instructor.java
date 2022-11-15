@@ -2,7 +2,6 @@ package kg.peaksoft.peaksoftlmsb6.entity;
 
 import kg.peaksoft.peaksoftlmsb6.dto.request.InstructorRequest;
 import kg.peaksoft.peaksoftlmsb6.entity.enums.Role;
-import kg.peaksoft.peaksoftlmsb6.exception.NotFoundException;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,7 +20,7 @@ import static javax.persistence.CascadeType.*;
 public class Instructor {
 
     @Id
-    @SequenceGenerator(name = "instructor_seq", sequenceName = "instructor_seq", allocationSize = 1,initialValue = 2)
+    @SequenceGenerator(name = "instructor_seq", sequenceName = "instructor_seq", allocationSize = 1,initialValue = 3)
     @GeneratedValue(generator = "instructor_seq", strategy = GenerationType.SEQUENCE)
     private Long id;
 

@@ -1,7 +1,6 @@
 package kg.peaksoft.peaksoftlmsb6.repository;
 
 import kg.peaksoft.peaksoftlmsb6.dto.response.StudentResponse;
-import kg.peaksoft.peaksoftlmsb6.entity.Instructor;
 import kg.peaksoft.peaksoftlmsb6.entity.Student;
 import kg.peaksoft.peaksoftlmsb6.entity.enums.StudyFormat;
 import org.springframework.data.jpa.repository.JpaRepository;
