@@ -16,21 +16,21 @@ drop table if exists questions;
 drop table if exists options;
 drop table if exists tests_question;
 drop table if exists questions_options;
-create sequence if not exists user_seq;
-create sequence if not exists group_seq;
-create sequence if not exists course_seq;
-create sequence if not exists instructor_seq;
-create sequence if not exists student_seq;
-create sequence if not exists lesson_seq;
-create sequence if not exists link_seq;
-create sequence if not exists presentation_seq;
-create sequence if not exists video_seq;
-create sequence if not exists task_seq;
-create sequence if not exists content_seq;
-create sequence if not exists test_seq;
-create sequence if not exists question_seq;
-create sequence if not exists option_seq;
-create sequence if not exists result_seq;
+create sequence if not exists user_seq minvalue 10;
+create sequence if not exists group_seq minvalue 10;
+create sequence if not exists course_seq minvalue 10;
+create sequence if not exists instructor_seq minvalue 10;
+create sequence if not exists student_seq minvalue 10;
+create sequence if not exists lesson_seq minvalue 10;
+create sequence if not exists link_seq minvalue 10;
+create sequence if not exists presentation_seq minvalue 10;
+create sequence if not exists video_seq minvalue 10;
+create sequence if not exists task_seq minvalue 10;
+create sequence if not exists content_seq minvalue 10;
+create sequence if not exists test_seq minvalue 10;
+create sequence if not exists question_seq minvalue 10;
+create sequence if not exists option_seq minvalue 10;
+create sequence if not exists result_seq minvalue 10;
 
 create table users
 (
