@@ -60,6 +60,7 @@ public class GroupService {
 
     public GroupResponse updateGroup(Long id, GroupRequest request) {
         Group group = groupRepository.findById(id).orElseThrow(
+
                 () -> {
                     log.error("Group with id {} not found", id);
                     throw new NotFoundException("Группа не найдена");
