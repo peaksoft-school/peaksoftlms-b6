@@ -4,203 +4,84 @@ import kg.peaksoft.peaksoftlmsb6.dto.request.InstructorRequest;
 import kg.peaksoft.peaksoftlmsb6.dto.request.UpdateInstructorRequest;
 import kg.peaksoft.peaksoftlmsb6.dto.response.InstructorResponse;
 import kg.peaksoft.peaksoftlmsb6.dto.response.SimpleResponse;
-import kg.peaksoft.peaksoftlmsb6.entity.Course;
 import kg.peaksoft.peaksoftlmsb6.entity.Instructor;
-import kg.peaksoft.peaksoftlmsb6.entity.User;
-import kg.peaksoft.peaksoftlmsb6.entity.enums.Role;
 import kg.peaksoft.peaksoftlmsb6.exception.NotFoundException;
 import kg.peaksoft.peaksoftlmsb6.repository.InstructorRepository;
-import kg.peaksoft.peaksoftlmsb6.repository.UserRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
-import java.util.Collections;
+import javax.transaction.Transactional;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@ExtendWith(MockitoExtension.class)
+@SpringBootTest
+@Transactional
 class InstructorServiceTest {
 
-    @Mock
-    private InstructorRepository mockInstructorRepository;
-    @Mock
-    private PasswordEncoder mockPasswordEncoder;
-    @Mock
-    private UserRepository mockUserRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
 
-    private InstructorService instructorServiceUnderTest;
-
-    @BeforeEach
-    void setUp() {
-        instructorServiceUnderTest = new InstructorService(mockInstructorRepository, mockPasswordEncoder,
-                mockUserRepository);
-    }
-
-    @Test
-    void testCreateInstructor() {
-        InstructorRequest request = new InstructorRequest("firstName", "lastName", "phoneNumber", "email",
-                "specialization", "password");
-        when(mockUserRepository.existsByEmail("email")).thenReturn(false);
-        when(mockPasswordEncoder.encode("password")).thenReturn("password");
-
-        Instructor instructor = new Instructor(
-                new InstructorRequest("firstName", "lastName", "phoneNumber", "email", "specialization", "password"));
-        when(mockInstructorRepository.save(any(Instructor.class))).thenReturn(instructor);
-
-        InstructorResponse instructorResponse = new InstructorResponse(0L, "fullName", "phoneNumber",
-                "specialization", "email");
-        when(mockInstructorRepository.getInstructor(0L)).thenReturn(instructorResponse);
-
-        InstructorResponse result = instructorServiceUnderTest.createInstructor(request);
-
-        verify(mockInstructorRepository).save(any(Instructor.class));
-    }
-
-    @Test
-    void testUpdateInstructor() {
-        UpdateInstructorRequest request = new UpdateInstructorRequest("full name", "phoneNumber", "email",
-                "specialization");
-
-        final Optional<Instructor> instructor = Optional.of(new Instructor(
-                new InstructorRequest("firstName", "lastName", "phoneNumber", "email", "specialization", "password")));
-        when(mockInstructorRepository.findById(0L)).thenReturn(instructor);
-
-        final User user1 = new User();
-        user1.setId(0L);
-        user1.setEmail("email");
-        user1.setPassword("password");
-        user1.setRole(Role.ADMIN);
-        final Instructor instructor1 = new Instructor();
-        instructor1.setId(0L);
-        instructor1.setFirstName("firstName");
-        instructor1.setLastName("lastName");
-        instructor1.setPhoneNumber("phoneNumber");
-        instructor1.setSpecialization("specialization");
-        final Course course = new Course();
-        course.setId(0L);
-        course.setCourseName("courseName");
-        course.setCourseDescription("courseDescription");
-        course.setDateOfStart(LocalDate.of(2020, 1, 1));
-        instructor1.setCourses(List.of(course));
-        user1.setInstructor(instructor1);
-        final Optional<User> user = Optional.of(user1);
-        when(mockUserRepository.findById(0L)).thenReturn(user);
-
-        final Instructor instructor2 = new Instructor(
-                new InstructorRequest("firstName", "lastName", "phoneNumber", "email", "specialization", "password"));
-        when(mockInstructorRepository.save(any(Instructor.class))).thenReturn(instructor2);
-
-        final InstructorResponse instructorResponse = new InstructorResponse(0L, "fullName", "phoneNumber",
-                "specialization", "email");
-        when(mockInstructorRepository.getInstructor(0L)).thenReturn(instructorResponse);
-
-        final InstructorResponse result = instructorServiceUnderTest.updateInstructor(0L, request);
-
-        verify(mockInstructorRepository).update(0L, "firstName", "lastName", "specialization", "phoneNumber");
-        verify(mockInstructorRepository).save(any(Instructor.class));
-    }
-
-    @Test
-    void testUpdateInstructor_InstructorRepositoryFindByIdReturnsAbsent() {
-        // Setup
-        final UpdateInstructorRequest request = new UpdateInstructorRequest("fullName", "phoneNumber", "email",
-                "specialization");
-        when(mockInstructorRepository.findById(0L)).thenReturn(Optional.empty());
-
-        // Run the test
-        assertThatThrownBy(() -> instructorServiceUnderTest.updateInstructor(0L, request))
-                .isInstanceOf(NotFoundException.class);
-    }
+    @Autowired
+    private InstructorService instructorService;
 
 
     @Test
-    void testDeleteInstructorById() {
-        // Setup
-        // Configure InstructorRepository.findById(...).
-        final Optional<Instructor> instructor = Optional.of(new Instructor(
-                new InstructorRequest("firstName", "lastName", "phoneNumber", "email", "specialization", "password")));
-        when(mockInstructorRepository.findById(0L)).thenReturn(instructor);
+    void createInstructor() {
+        InstructorRequest request = new InstructorRequest(
+                "FirstName", "LastName",
+                "2020303", "ins@gmail.com",
+                "Java", "Instructor");
 
-        // Run the test
-        final SimpleResponse result = instructorServiceUnderTest.deleteInstructorById(0L);
+        InstructorResponse instructor = instructorService.createInstructor(request);
 
-        // Verify the results
-        verify(mockInstructorRepository).delete(any(Instructor.class));
+        assertNotNull(instructor);
+        assertEquals(instructor.getFullName(), request.getFirstName() + " " + request.getLastName());
+        assertEquals(instructor.getEmail(), request.getEmail());
+        assertEquals(instructor.getSpecialization(), request.getSpecialization());
+        assertEquals(instructor.getPhoneNumber(), request.getPhoneNumber());
     }
 
     @Test
-    void testDeleteInstructorById_InstructorRepositoryFindByIdReturnsAbsent() {
-        // Setup
-        when(mockInstructorRepository.findById(0L)).thenReturn(Optional.empty());
+    void updateInstructor() {
+        UpdateInstructorRequest request = new UpdateInstructorRequest(
+                "first lastname", "004005",
+                "mentor@gmail.com", "developer");
+        Instructor instructor = instructorRepository.findById(1L).orElseThrow(
+                () -> new NotFoundException("Instructor not found"));
+        InstructorResponse response = instructorService.updateInstructor(instructor.getId(), request);
 
-        // Run the test
-        assertThatThrownBy(() -> instructorServiceUnderTest.deleteInstructorById(0L))
-                .isInstanceOf(NotFoundException.class);
+        assertNotNull(response);
+        assertEquals(response.getFullName(), request.getFullName());
+        assertEquals(response.getEmail(), request.getEmail());
+        assertEquals(response.getSpecialization(), request.getSpecialization());
+        assertEquals(response.getPhoneNumber(), request.getPhoneNumber());
     }
 
     @Test
-    void testGetAllInstructors() {
-        // Setup
-        // Configure InstructorRepository.getAllInstructors(...).
-        final List<InstructorResponse> instructorResponses = List.of(
-                new InstructorResponse(0L, "fullName", "phoneNumber", "specialization", "email"));
-        when(mockInstructorRepository.getAllInstructors()).thenReturn(instructorResponses);
+    void deleteInstructorById() {
+        SimpleResponse simpleResponse = instructorService.deleteInstructorById(1L);
 
-        // Run the test
-        final List<InstructorResponse> result = instructorServiceUnderTest.getAllInstructors();
-
-        // Verify the results
+        assertNotNull(simpleResponse);
+        assertThatThrownBy(() -> instructorService.getById(1L)).isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("Инструктор не найден");
     }
 
     @Test
-    void testGetAllInstructors_InstructorRepositoryReturnsNoItems() {
-        // Setup
-        when(mockInstructorRepository.getAllInstructors()).thenReturn(Collections.emptyList());
+    void getAllInstructors() {
+        List<InstructorResponse> allInstructors = instructorService.getAllInstructors();
 
-        // Run the test
-        final List<InstructorResponse> result = instructorServiceUnderTest.getAllInstructors();
-
-        // Verify the results
-        assertThat(result).isEqualTo(Collections.emptyList());
+        assertEquals(2, allInstructors.size());
     }
 
     @Test
-    void testGetById() {
-        // Setup
-        // Configure InstructorRepository.findById(...).
-        final Optional<Instructor> instructor = Optional.of(new Instructor(
-                new InstructorRequest("firstName", "lastName", "phoneNumber", "email", "specialization", "password")));
-        when(mockInstructorRepository.findById(0L)).thenReturn(instructor);
+    void getById() {
+        InstructorResponse instructor = instructorService.getById(1L);
 
-        // Configure InstructorRepository.getInstructor(...).
-        final InstructorResponse instructorResponse = new InstructorResponse(0L, "fullName", "phoneNumber",
-                "specialization", "email");
-        when(mockInstructorRepository.getInstructor(0L)).thenReturn(instructorResponse);
-
-        // Run the test
-        final InstructorResponse result = instructorServiceUnderTest.getById(0L);
-
-        // Verify the results
-    }
-
-    @Test
-    void testGetById_InstructorRepositoryFindByIdReturnsAbsent() {
-        // Setup
-        when(mockInstructorRepository.findById(0L)).thenReturn(Optional.empty());
-
-        // Run the test
-        assertThatThrownBy(() -> instructorServiceUnderTest.getById(0L)).isInstanceOf(NotFoundException.class);
+        assertNotNull(instructor);
+        assertEquals(instructor.getId(), 1L);
     }
 }
